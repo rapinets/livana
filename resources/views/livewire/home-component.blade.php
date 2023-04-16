@@ -16,7 +16,7 @@
                             </div>
                             <div class="col-lg-7 col-md-6">
                                 <div class="single-slider-img single-slider-img-1">
-                                    <img class="animated slider-1-1" src="assets/imgs/slider/slider-1.png" alt="">
+                                    <img class="animated slider-1-1" src="{{ asset('public/assets/imgs/slider/slider-1.png') }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                             </div>
                             <div class="col-lg-7 col-md-6">
                                 <div class="single-slider-img single-slider-img-1">
-                                    <img class="animated slider-1-2" src="assets/imgs/slider/slider-2.png" alt="">
+                                    <img class="animated slider-1-2" src="{{ asset('public/assets/imgs/slider/slider-2.png') }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -113,8 +113,8 @@
                                     <div class="product-img-action-wrap">
                                         <div class="product-img product-img-zoom">
                                             <a href="product-details.html">
-                                                <img class="default-img" src="assets/imgs/shop/product-1-1.jpg" alt="">
-                                                <img class="hover-img" src="assets/imgs/shop/product-1-2.jpg" alt="">
+                                                <img class="default-img" src="{{ asset('public/assets/imgs/shop/product-1-1.jpg') }}" alt="">
+                                                <img class="hover-img" src="{{ asset('public/assets/imgs/shop/product-1-2.jpg') }}" alt="">
                                             </a>
                                         </div>
                                         <div class="product-action-1">
