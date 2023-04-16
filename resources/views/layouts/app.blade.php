@@ -49,9 +49,21 @@
                     </div>
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
+                            @auth 
+                                <ul>                                
+                                    <li><i class="fi-rs-user"></i>{{ Auth::user()->name }}  / 
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
+                                        </form>
+                                    </li>
+                                </ul>
+                            @endauth
+                            @guest
                             <ul>                                
-                                <li><i class="fi-rs-key"></i><a href="login.html">Log In </a>  / <a href="register.html">Sign Up</a></li>
+                                <li><i class="fi-rs-key"></i><a href="{{ route('login') }}">Log In </a>  / <a href="{{ route('register') }}">Sign Up</a></li>
                             </ul>
+                            @endguest
                         </div>
                     </div>
                 </div>
@@ -380,15 +392,22 @@
                                     <li><a href="blog.html">Blog </a></li>                                    
                                     <li><a href="contact.html">Contact</a></li>
                                     <li><a href="#">My Account<i class="fi-rs-angle-down"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="#">Dashboard</a></li>
-                                            <li><a href="#">Products</a></li>
-                                            <li><a href="#">Categories</a></li>
-                                            <li><a href="#">Coupons</a></li>
-                                            <li><a href="#">Orders</a></li>
-                                            <li><a href="#">Customers</a></li>
-                                            <li><a href="#">Logout</a></li>                                            
-                                        </ul>
+                                    @auth
+                                        @if(Auth::user()->utype == 'ADM')
+                                            <ul class="sub-menu">
+                                                <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                                <li><a href="#">Products</a></li>
+                                                <li><a href="#">Categories</a></li>
+                                                <li><a href="#">Coupons</a></li>
+                                                <li><a href="#">Orders</a></li>
+                                                <li><a href="#">Customers</a></li>
+                                            </ul>
+                                        @else 
+                                            <ul class="sub-menu">
+                                                <li><a href="{{ route('user.dashboard') }}">Dashboard</a></li>
+                                            </ul>
+                                        @endif
+                                    @endauth
                                     </li>
                                 </ul>
                             </nav>
