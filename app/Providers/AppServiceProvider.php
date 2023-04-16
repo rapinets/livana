@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Events\QueryExecuted;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Model::preventLazyLoading(!app()->isProduction());
+        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
+
+        // DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
+        //     // Notify development team...
+        // });
+
+        // TODO request cycle
     }
 }
