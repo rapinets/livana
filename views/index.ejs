@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+
+<body class="page-main">
+  <div class="wrapper">
+    <header class="header">
+      <%- include('./sections/header.ejs') %>
+    </header>
+    <main class="main">
+      <div class="main__container">
+        <h1 class="main__title">Our Products</h1>
+
+        <section class="products">
+          <% products.forEach(product=> { %>
+            <article class="product-card">
+              <div class="product-card__image">
+                <img src="<%= product.photo ? `/${product.photo}` : '/images/nophoto.webp' %>"
+                  alt="<%= product.name %>">
+              </div>
+
+              <div class="product-card__content">
+                <h3 class="product-card__title">
+                  <%= product.name %>
+                </h3>
+
+                <div class="product-card__price">
+                  &#8372;<%= product.price %>
+                </div>
+              </div>
+            </article>
+            <% }) %>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      <%- include('./sections/footer.ejs') %>
+    </footer>
+  </div>
+</body>
+
+</html>

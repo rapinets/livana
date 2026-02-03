@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <script>
+    function handlePostImgPreview(event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const imgElement = document.getElementById('imgPreview');
+          if (imgElement) imgElement.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</head>
+
+<body class="page">
+  <div class="admin">
+
+    <!-- SIDEBAR -->
+    <aside class="admin__sidebar sidebar">
+      <div class="sidebar__logo">🛠 Dashboard</div>
+
+      <nav class="sidebar__nav">
+        <a href="/products" class="sidebar__link sidebar__link--active">
+          Products
+        </a>
+      </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="admin__content content">
+      <header class="content__header">
+        <h1 class="content__title">
+          <%= product?._id ? 'Edit Product' : 'Add Product' %>
+        </h1>
+      </header>
+
+      <section class="content__body">
+        <form class="form" method="POST"
+          action="<%= product?._id ? `/products/update/${product._id}` : '/products/create' %>"
+          enctype="multipart/form-data">
+
+          <!-- NAME -->
+          <div class="form__group">
+            <label class="form__label">Name</label>
+            <input type="text" name="name" class="form__input" value="<%= product?.name || '' %>">
+
+            <% if (errors?.name) { %>
+              <span class="form__error">
+                <%= errors.name %>
+              </span>
+              <% } %>
+
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div class="form__group">
+            <label class="form__label">Description</label>
+            <textarea name="description" class="form__textarea" rows="4"><%= product?.description || '' %></textarea>
+
+            <% if (errors?.description) { %>
+              <span class="form__error">
+                <%= errors.description %>
+              </span>
+              <% } %>
+
+          </div>
+
+          <!-- PRICE + AMOUNT -->
+          <div class="form__row">
+            <div class="form__group">
+              <label class="form__label">Price</label>
+              <input type="number" name="price" class="form__input" value="<%= product?.price || '' %>" step="0.01">
+
+              <% if (errors?.price) { %>
+                <span class="form__error">
+                  <%= errors.price %>
+                </span>
+                <% } %>
+
+            </div>
+
+            <div class="form__group">
+              <label class="form__label">Amount</label>
+              <input type="number" name="amount" class="form__input" value="<%= product?.amount || '' %>">
+
+              <% if (errors?.amount) { %>
+                <span class="form__error">
+                  <%= errors.amount %>
+                </span>
+                <% } %>
+
+            </div>
+          </div>
+
+          <!-- DIMENSIONS -->
+          <div class="form__row">
+            <div class="form__group">
+              <label class="form__label">Height</label>
+              <input type="number" name="height" class="form__input" value="<%= product?.height || '' %>">
+
+              <% if (errors?.height) { %>
+                <span class="form__error">
+                  <%= errors.height %>
+                </span>
+                <% } %>
+
+            </div>
+
+            <div class="form__group">
+              <label class="form__label">Width</label>
+              <input type="number" name="width" class="form__input" value="<%= product?.width || '' %>">
+
+              <% if (errors?.width) { %>
+                <span class="form__error">
+                  <%= errors.width %>
+                </span>
+                <% } %>
+
+            </div>
+          </div>
+
+          <!-- PHOTO -->
+          <div class="form__group">
+            <label class="form__label" for="photo">Photo</label>
+
+
+            <div class="form__preview">
+              <img id="imgPreview" src="<%= product.photo ? `/${product.photo}` : '/images/gallery.png' %>"
+                alt="Product photo" class="form__image">
+            </div>
+
+
+            <input type="file" id="photo" name="photo" class="form__file" accept="image/*"
+              onchange="handlePostImgPreview(event)">
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="form__actions">
+            <button type="submit" class="button button--primary">
+              <%= product?._id ? 'Update product' : 'Create product' %>
+            </button>
+
+            <a href="/products" class="button button--secondary">
+              Cancel
+            </a>
+          </div>
+
+        </form>
+      </section>
+    </main>
+
+  </div>
+</body>
+
+</html>
