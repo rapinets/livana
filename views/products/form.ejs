@@ -7,17 +7,10 @@
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <script src="/javascripts/RequestManager.js"></script>
   <script>
-    function handlePostImgPreview(event) {
-      const file = event.target.files[0];
-      if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const imgElement = document.getElementById('imgPreview');
-          if (imgElement) imgElement.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
+    function onFileInput(event) {
+      RequestManager.handleFileSelect(event, '#imgPreview')
     }
   </script>
 </head>
@@ -141,7 +134,7 @@
 
 
             <input type="file" id="photo" name="photo" class="form__file" accept="image/*"
-              onchange="handlePostImgPreview(event)">
+              onchange="onFileInput(event)">
           </div>
 
           <!-- ACTIONS -->

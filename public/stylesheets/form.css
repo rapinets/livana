@@ -69,6 +69,20 @@
   border-radius: 1rem;
 }
 
+/* ===== LOGIN ===== */
+.login__form {
+  width: 35%;
+}
+
+.login__container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
 /* ===== ERRORS ===== */
 .form__group--error .form__input,
 .form__group--error .form__textarea,

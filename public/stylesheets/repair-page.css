@@ -1,0 +1,33 @@
+.repair__container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.repair__inner {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.repair__text:not(:last-child) {
+  margin-block-end: 1.5rem;
+}
+
+.repair__text:last-child {
+  margin-block-end: 2rem;
+}
+
+.repair__link {
+  color: white;
+  text-transform: uppercase;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  background-color: rgba(42, 37, 75, 1);
+  transition: all 0.3s ease-out;
+}
+
+.repair__link:hover {
+  background-color: rgba(30, 25, 62, 1);
+  border-radius: 0.625rem;
+}

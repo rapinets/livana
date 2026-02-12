@@ -43,7 +43,7 @@ class ProductsController {
 
   static async create(req, res) {
     try {
-      res.cookie('sort', -1, { maxAge: 5 * 60 * 1000 })
+
       const data = req.validationData
 
       await ProductsDBService.create(data)

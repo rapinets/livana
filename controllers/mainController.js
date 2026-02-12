@@ -6,7 +6,8 @@ class MainController {
       const products = await ProductsDBService.getList()
       res.render('index', {
         title: 'Livana',
-        products
+        products,
+        user: req.user
       })
 
     } catch (err) {

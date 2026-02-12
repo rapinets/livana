@@ -1,8 +1,14 @@
-import { Router } from 'express'
-import MainController from '../controllers/mainController.js';
-const router = Router()
+import express from 'express'
+import main from './main.js'
+import products from './products.js'
+import users from './users.js'
+import auth from './auth.js'
 
-/* GET home page. */
-router.get('/', MainController.getList);
+const router = express.Router()
+
+router.use('/auth', auth)
+router.use('/users', users)
+router.use('/products', products)
+router.use('/', main)
 
 export default router

@@ -57,6 +57,31 @@ class MongooseCRUDManager {
     }
   }
 
+  async findOne(filters = {}, projection = null, populateFields = []) {
+    try {
+      let query = this.model.findOne(filters, projection)
+      populateFields.forEach((field) => {
+        if (typeof field === 'string') {
+          // Якщо поле передано як рядок
+          query = query.populate(field)
+        } else if (
+          typeof field === 'object' &&
+          field.fieldForPopulation &&
+          field.requiredFieldsFromTargetObject
+        ) {
+          // Якщо передано об'єкт з полем для заповнення та запитуваними полями
+          query = query.populate(
+            field.fieldForPopulation,
+            field.requiredFieldsFromTargetObject
+          )
+        }
+      })
+      return await query.exec()
+    } catch (error) {
+      throw new Error('Error finding data by id: ' + error.message)
+    }
+  }
+
   // Оновлення за id
   async update(id, data) {
     try {

@@ -1,10 +1,11 @@
 import User from './User.js'
-import MongooseCRUDManager from '../MongooseCRUDManger.js'
+import MongooseCRUDManager from '../MongooseCRUDManager.js'
 
 class UserDBService extends MongooseCRUDManager {
-  async getOne(email) {
+
+  async getList(filters) {
     try {
-      const res = await User.findOne(email)
+      const res = await super.getList(filters, { password: 0 }, ['type'])
       return res
     } catch (error) {
       return []

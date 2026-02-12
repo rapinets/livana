@@ -1,5 +1,5 @@
 import Product from "./Product.js";
-import MongooseCRUDManager from "../MongooseCRUDManger.js";
+import MongooseCRUDManager from "../MongooseCRUDManager.js";
 
 class ProductsDBService extends MongooseCRUDManager {
   async getList(filters = {}, sort = {}) {

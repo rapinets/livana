@@ -1,0 +1,48 @@
+<div class="header__container">
+  <div class="header__top">
+    <div class="header__search">
+      <form action="#" class="search-form">
+        <button class="search-form__btn">
+          <svg class="icon">
+            <use xlink:href="/images/icons/sprite.svg#search"></use>
+          </svg>
+        </button>
+      </form>
+    </div>
+    <div class="header__logo logo">Livana</div>
+    <div class="header__actions actions-header">
+      <a class="actions-header__login <%= user ? 'hidden' : 'visible' %>" href="auth/login" title="Sign in">
+        <svg class="icon">
+          <use xlink:href="/images/icons/sprite.svg#user-avatar"></use>
+        </svg>
+      </a>
+      <a href="auth/logout" class="actions-header__logout <%= user ? 'visible' : 'hidden' %>">Logout (<%= user?.name %>
+          )</a>
+    </div>
+  </div>
+  <nav class="header__menu menu">
+    <div class="menu__body">
+      <ul class="menu__list">
+        <li class="menu__item">
+          <a href="#" class="menu__link <%= isActive('/') %>">Home</a>
+        </li>
+        <li class="menu__item">
+          <a href="/repair.html" class="menu__link">About</a>
+        </li>
+        <li class="menu__item">
+          <a href="/repair.html" class="menu__link">Products</a>
+        </li>
+        <li class="menu__item">
+          <a href="/repair.html" class="menu__link">Contacts</a>
+        </li>
+        <% if (user && user.role==='admin' ) {%>
+          <li class="menu__item">
+            <a href="/products" class="menu__link">Dashboard</a>
+          </li>
+          <%} %>
+      </ul>
+    </div>
+  </nav>
+
+
+</div>

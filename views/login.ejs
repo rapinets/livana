@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    Login
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+
+<body class="page-main">
+  <div class="wrapper">
+    <section class="login">
+      <div class="login__container">
+        <% if (error) { %>
+          <div class="form__error">
+            <%= error %>
+          </div>
+          <% } %>
+            <form action="/auth/login" class="login__form form-login form" method="POST">
+              <div class="form-login__group form__group">
+                <label for="name" class="form-login__label form__label">Name</label>
+                <input id="name" type="text" name="name" class="form-login__input form__input"
+                  value="<%= oldData?.name || '' %>">
+              </div>
+              <div class="form-login__group form__group">
+                <label for="password" class="form-login__label form__label">Password</label>
+                <input id="password" type="password" name="password" class="form-login__input form__input">
+              </div>
+              <div class="form-login__actions form__actions">
+                <button type="submit" class="button button--primary">
+                  Sign in
+                </button>
+
+                <a href="/" class="button button--secondary">
+                  Cancel
+                </a>
+              </div>
+            </form>
+
+      </div>
+    </section>
+  </div>
+</body>
+
+</html>
