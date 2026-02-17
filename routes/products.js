@@ -5,7 +5,7 @@ import UploadManager from '../utils/UploadManager.js'
 import { ProductValidationSchema } from '../validation/product.schema.js';
 const router = Router()
 
-router.get('/', ProductsController.getList);
+router.get('/', ProductsController.getAllProducts);
 router.get('/create', ProductsController.getForm)
 router.get('/update/:id', ProductsController.getForm)
 
