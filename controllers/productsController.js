@@ -1,22 +1,10 @@
 import ProductsDBService from "../models/product/ProductsDBService.js"
 
 class ProductsController {
-  static async getList(req, res) {
+  static async getAllProducts(req, res) {
     try {
-      const sort = {}
-      if (req.session.user) {
-        sort.price = 1
-        req.session = null
-      }
-      if (req.cookies.sort) {
-        sort.price = Number(req.cookies.sort)
-      }
-
       const products = await ProductsDBService.getList({}, sort)
-      res.render('products/list', {
-        title: 'Products List',
-        products
-      })
+      res.status(200).json(products)
 
     } catch (err) {
       res.status(500).json({ error: err.message })
