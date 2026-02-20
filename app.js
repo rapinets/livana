@@ -1,8 +1,7 @@
 import express from 'express'
-import routes from './routes/index.js'
+import routes from './src/v1/routes/index.js'
 import connectDB from './db/connectDB.js'
-import errorHandler from './middleware/errorHandler.js';
-import middleware from './middleware/index.js';
+import { middleware, errorMiddlewareHandler } from './middleware/index.js';
 
 var app = express();
 
@@ -10,9 +9,9 @@ connectDB()
 
 middleware(app)
 
-app.use('/', routes);
+app.use('/api/v1/', routes);
 
 // error handler
-errorHandler(app)
+errorMiddlewareHandler(app)
 
 export default app

@@ -1,33 +1,42 @@
 import express from 'express'
-import path from 'path'
 import cookieParser from 'cookie-parser'
 import loggerConfig from '../config/logger.js'
-import { fileURLToPath } from 'url'
 import sessionConfig from '../config/session.js'
-import passport from '../config/passport.js'
-import setActiveMenu from './setActiveMenu.js'
+import auth from './auth.js'
+import dotenv from 'dotenv'
+import { applySecurity } from './security/index.js'
+import { setupStaticFiles } from './staticFiles.js'
 
-const __filename = fileURLToPath(import.meta.url) // get the resolved path to the file
-const __dirname = path.dirname(__filename) // get the name of the directory
+import { errorMiddlewareHandler } from './error/index.js'
 
-const middleware = (app) => {
-  // view engine setup
-  app.set('views', path.join(__dirname, '../views'));
-  app.set('view engine', 'ejs');
+const middleware = (app, opts = {}) => {
+  // Завантаження змінних середовища
+  dotenv.config()
 
-  app.use(loggerConfig);
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
+  // Middleware для парсингу cookies (move to top)
+  app.use(cookieParser())
 
-  app.use(express.static(path.join(__dirname, '../public')));
-  app.use(express.static(path.join(__dirname, '../uploads')))
+  // Підключення security middleware bundle (helmet, cors, rateLimit, body limits, requestId, env marker)
+  applySecurity(app, opts.security)
 
+  // Middleware для аутентифікації та авторизації
+  auth(app)
+
+  // Middleware для логування запитів
+  app.use(loggerConfig)
+
+  // Middleware для обробки статичних файлів (public, uploads)
+  setupStaticFiles(app)
+
+  // Middleware для налаштування сесій
   app.use(sessionConfig)
-  app.use(passport.initialize())
-  app.use(passport.session())
-  app.use(setActiveMenu)
-
 }
 
-export default middleware
+export { middleware, errorMiddlewareHandler }
+
+
+
+
+
+
+
