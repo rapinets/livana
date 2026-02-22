@@ -19,14 +19,14 @@ const middleware = (app, opts = {}) => {
   // Підключення security middleware bundle (helmet, cors, rateLimit, body limits, requestId, env marker)
   applySecurity(app, opts.security)
 
+  // Middleware для обробки статичних файлів (public, uploads)
+  setupStaticFiles(app)
+
   // Middleware для аутентифікації та авторизації
   auth(app)
 
   // Middleware для логування запитів
   app.use(loggerConfig)
-
-  // Middleware для обробки статичних файлів (public, uploads)
-  setupStaticFiles(app)
 
   // Middleware для налаштування сесій
   app.use(sessionConfig)
