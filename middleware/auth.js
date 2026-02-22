@@ -42,7 +42,7 @@ export function authenticate(req, res, next) {
 // Головна функція для підключення middleware
 const auth = (app) => {
   // Підключення middleware для аутентифікації
-  app.use(authenticate)
+  app.use('/api', authenticate)
 }
 
 export default auth
