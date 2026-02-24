@@ -34,7 +34,7 @@ class AuthController {
         httpOnly: true, // cookie недоступна з JS
         secure: config.nodeEnv === 'production', // тільки по https у продакшені
         sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
-        path: '/api/v1/auth', // cookie доступна тільки на цьому шляху
+        
         maxAge: config.refreshCookiesExpires,
       })
       // Відправляємо accessToken у відповіді
@@ -79,7 +79,7 @@ class AuthController {
         httpOnly: true,
         secure: config.nodeEnv === 'production', // тільки по https у продакшені
         sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
-        path: '/api/v1/auth', // cookie доступна тільки на цьому шляху
+        
         maxAge: config.refreshCookiesExpires,
       })
       // Відправляємо accessToken у відповіді
