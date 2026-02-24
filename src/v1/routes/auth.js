@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.post('/signup', validationUser(signupSchema), AuthController.signup)
 router.post('/login', validationUser(loginSchema), AuthController.login)
-router.post('/refresh-token', AuthController.refreshToken)
+router.post('/refresh', AuthController.refreshToken)
 router.post('/logout', AuthController.logout)
 
 export default router

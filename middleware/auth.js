@@ -28,6 +28,7 @@ export function authenticate(req, res, next) {
   if (openPaths.includes(req.path)) {
     return next()
   }
+  
   try {
     const authHeader = req.headers.authorization
     if (!authHeader) {
