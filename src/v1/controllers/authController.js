@@ -33,7 +33,8 @@ class AuthController {
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true, // cookie недоступна з JS
         secure: config.nodeEnv === 'production', // тільки по https у продакшені
-        sameSite: 'lax',
+        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        path: '/api/v1/auth', // cookie доступна тільки на цьому шляху
         maxAge: config.refreshCookiesExpires,
       })
       // Відправляємо accessToken у відповіді
@@ -77,7 +78,8 @@ class AuthController {
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: config.nodeEnv === 'production', // тільки по https у продакшені
-        sameSite: 'lax',
+        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        path: '/api/v1/auth', // cookie доступна тільки на цьому шляху
         maxAge: config.refreshCookiesExpires,
       })
       // Відправляємо accessToken у відповіді
@@ -134,7 +136,8 @@ class AuthController {
       res.clearCookie('refreshToken', {
         httpOnly: true,
         secure: config.nodeEnv === 'production',
-        sameSite: 'lax',
+        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        path: '/api/v1/auth', // cookie доступна тільки на цьому шляху
       })
       res.json({ result: 'Logged out' })
     } catch (err) {

@@ -1,13 +1,13 @@
 import { parseAccessBearer } from '../utils/jwtHelpers.js'
 
 // Список відкритих шляхів (не потребують авторизації)
-const openPaths = [
-  '/api/v1/auth/login',
-  '/api/v1/auth/signup',
-  '/api/v1/products',
-  '/api/v1/auth/refresh-token',
-  '/api/v1/auth/logout',
-]
+// const openPaths = [
+//   '/api/v1/auth/login',
+//   '/api/v1/auth/signup',
+//   '/api/v1/products',
+//   '/api/v1/auth/refresh-token',
+//   '/api/v1/auth/logout',
+// ]
 
 // Middleware для перевірки ролей (приклад: тільки admin)
 // Middleware для перевірки ролей (можна передати одну або декілька ролей)
@@ -40,9 +40,9 @@ export function authenticate(req, res, next) {
 }
 
 // Головна функція для підключення middleware
-const auth = (app) => {
+// const auth = (app) => {
   // Підключення middleware для аутентифікації
-  app.use('/api', authenticate)
-}
+  // app.use('/api', authenticate)
+// }
 
 export default auth

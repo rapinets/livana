@@ -80,7 +80,7 @@ import cors from 'cors'
 export function corsPolicy({
   allowedOrigins = [],
   allowNoOrigin = true,
-  credentials = false,
+  credentials = true,
 } = {}) {
   // ✅ DEV MODE: дозволяємо будь-які origin (для localhost/портів/тунелів)
   const isDev = process.env.NODE_ENV === 'development'

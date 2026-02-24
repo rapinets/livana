@@ -61,6 +61,7 @@ export function applySecurity(app, opts = {}) {
       'http://localhost:5500',
       'http://localhost:8080',
       'http://localhost:5173',
+      'https://livana-s3dk.onrender.com',
     ],
     corsAllowNoOrigin = true,
     corsCredentials = true,
