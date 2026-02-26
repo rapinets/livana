@@ -5,6 +5,7 @@ class RequestManager {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include', // Надсилаємо та отримуємо cookies
       body: JSON.stringify({ id }),
     })
     const data = await response.json()

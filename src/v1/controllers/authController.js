@@ -1,6 +1,6 @@
 import config from '../../../config/default.js'
 import UsersDBService from '../models/user/UsersDBService.js'
-import { generateAccessToken, generateRefreshToken } from '../../../utils/jwtHelpers.js'
+import { generateAccessToken, generateRefreshToken, parseRefreshBearer } from '../../../utils/jwtHelpers.js'
 
 class AuthController {
 
@@ -32,11 +32,13 @@ class AuthController {
       // Відправляємо refreshToken у httpOnly cookie
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true, // cookie недоступна з JS
-        secure: config.nodeEnv === 'production', // тільки по https у продакшені
+        // secure: config.nodeEnv === 'production',
+        secure: true, // для тестування на localhost, в продакшені має бути true
         sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/', 
         maxAge: config.refreshCookiesExpires,
       })
+      console.log('Refresh token set in cookie:', refreshToken)
       // Відправляємо accessToken у відповіді
       res.status(201).json({
         result: 'Signed up successfully',
@@ -77,11 +79,13 @@ class AuthController {
       // Відправляємо refreshToken у httpOnly cookie
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        secure: config.nodeEnv === 'production', // тільки по https у продакшені
+        // secure: config.nodeEnv === 'production',
+        secure: true, // для тестування на localhost, в продакшені має бути true
         sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
       })
+      console.log('Refresh token set in cookie:', refreshToken)
       // Відправляємо accessToken у відповіді
       res.json({
         result: 'Authorized',
@@ -135,7 +139,8 @@ class AuthController {
     try {
       res.clearCookie('refreshToken', {
         httpOnly: true,
-        secure: config.nodeEnv === 'production',
+        // secure: config.nodeEnv === 'production',
+        secure: true, // для тестування на localhost, в продакшені має бути true
         sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
       })
