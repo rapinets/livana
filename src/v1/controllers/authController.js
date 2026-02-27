@@ -7,19 +7,23 @@ class AuthController {
  // Реєстрація нового користувача
   static async signup(req, res, next) {
     try {
-      // Отримуємо дані з тіла запиту
-      const { email, username, password } = req.body
+      // use validated data (zod sanitises/normalises values)
+      const { name, email, password, img } = req.validated || req.body
+
       // Перевіряємо, чи існує користувач з таким email
       const existing = await UsersDBService.findOne({ email })
       if (existing) {
         return res.status(409).json({ error: 'Email already in use' })
       }
-      // Створюємо нового користувача
+
+      // Створюємо нового користувача (model expects `name`, not `username`)
       const savedUser = await UsersDBService.createUser({
+        name,
         email,
-        username,
         password,
+        img,
       })
+
       // Формуємо інформацію для токенів
       const userInfo = UsersDBService.getUserAuthInfo(savedUser)
 
@@ -46,6 +50,7 @@ class AuthController {
         user: userInfo,
       })
     } catch (err) {
+      console.error('Signup failed:', err)
       res.status(500).json({ error: 'Signup error' })
     }
   }
@@ -93,6 +98,7 @@ class AuthController {
         user: userInfo,
       })
     } catch (err) {
+      console.error('Login failed:', err)
       res.status(500).json({ error: 'Login error' })
     }
   }

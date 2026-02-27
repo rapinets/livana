@@ -42,10 +42,16 @@ const userSchema = new Schema({
 })
 
 userSchema.pre('save', async function () {
-  if (!this.isModified('password')) { return }
+  if (!this.isModified('password')) {
+    return
+  }
   const salt = await bcrypt.genSalt(10)
-  this.password = bcrypt.hash(this.password, salt)
-
+  // bcrypt.hash returns a promise, we **must await** it otherwise the
+  // document will store a Promise object instead of the actual hash.
+  // Storing a Promise leads to a runtime error when `bcrypt.compare` is
+  // later called during login, which is exactly why you were seeing a
+  // 500 error – the second argument was a Promise rather than a string.
+  this.password = await bcrypt.hash(this.password, salt)
 })
 
 userSchema.methods.validPassword = async function (password) {

@@ -28,7 +28,8 @@ class UserDBService extends MongooseCRUDManager {
   getUserAuthInfo(user) {
     return {
       id: user._id,
-      username: user.username,
+      // the user schema stores the name in `name`, not `username`
+      name: user.name,
       email: user.email,
       role: user.type?.title || 'user',
     }
