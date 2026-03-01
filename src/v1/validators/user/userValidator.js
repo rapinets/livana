@@ -36,8 +36,14 @@ export const loginSchema = z.object({
 })
 
 export function validationUser(schema) {
-  return (req, res, next) => {
-    const result = schema.safeParse(req.body)
+  return async (req, res, next) => {
+    const type = await TypesDBService.getOne('user')
+
+    const safeBody = {
+      ...req.body,
+      type: type._id,
+    }
+    const result = schema.safeParse(safeBody)
     if (!result.success) {
       const errors = result.error.issues.map((err) => err.message)
       return res.status(400).json({ errors })
