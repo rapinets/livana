@@ -8,21 +8,16 @@ class AuthController {
   static async signup(req, res, next) {
     try {
       // use validated data (zod sanitises/normalises values)
-      const { name, email, password, img } = req.validated || req.body
+      const validData = req.validated || req.body
 
       // Перевіряємо, чи існує користувач з таким email
-      const existing = await UsersDBService.findOne({ email })
+      const existing = await UsersDBService.findOne({ email: validData.email })
       if (existing) {
         return res.status(409).json({ error: 'Email already in use' })
       }
 
       // Створюємо нового користувача (model expects `name`, not `username`)
-      const savedUser = await UsersDBService.createUser({
-        name,
-        email,
-        password,
-        img,
-      })
+      const savedUser = await UsersDBService.createUser(validData)
 
       // Формуємо інформацію для токенів
       const userInfo = UsersDBService.getUserAuthInfo(savedUser)
