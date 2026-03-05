@@ -8,7 +8,7 @@ class AuthController {
   static async signup(req, res, next) {
     try {
       // use validated data (zod sanitises/normalises values)
-      const validData = req.validated || req.body
+      const validData = req.validated
 
       // Перевіряємо, чи існує користувач з таким email
       const existing = await UsersDBService.findOne({ email: validData.email })
