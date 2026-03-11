@@ -6,10 +6,11 @@ class AuthController {
 
  // Реєстрація нового користувача
   static async signup(req, res, next) {
+    
     try {
       // use validated data (zod sanitises/normalises values)
       const validData = req.validated
-
+      
       // Перевіряємо, чи існує користувач з таким email
       const existing = await UsersDBService.findOne({ email: validData.email })
       if (existing) {
@@ -33,8 +34,8 @@ class AuthController {
         httpOnly: true, // cookie недоступна з JS
         // secure: config.nodeEnv === 'production',
         secure: true, // для тестування на localhost, в продакшені має бути true
-        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
-        path: '/', 
+        sameSite: false, // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        path: '/',
         maxAge: config.refreshCookiesExpires,
       })
       console.log('Refresh token set in cookie:', refreshToken)
@@ -54,14 +55,14 @@ class AuthController {
   static async login(req, res, next) {
     try {
       // Знаходимо користувача по email
-      const user = await UsersDBService.findUser({ email: req.body.email })
+      const user = await UsersDBService.findUser({ email: req.validated.email })
 
       if (!user) {
         return res.status(401).json({ error: 'Email or password is incorrect' })
       }
 
       // Перевіряємо пароль
-      const isValid = await user.validPassword(req.body.password)
+      const isValid = await user.validPassword(req.validated.password)
       if (!isValid) {
         return res.status(401).json({ error: 'Email or password is incorrect' })
       }
@@ -81,7 +82,7 @@ class AuthController {
         httpOnly: true,
         // secure: config.nodeEnv === 'production',
         secure: true, // для тестування на localhost, в продакшені має бути true
-        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: false, // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
       })
@@ -129,7 +130,7 @@ class AuthController {
       const accessToken = generateAccessToken(userInfo, req.headers)
 
       // Відправляємо accessToken у відповіді
-      res.json({ accessToken })
+      res.json({ accessToken, user: userInfo })
     } catch (err) {
       res.status(500).json({ error: 'Refresh token error' })
     }
@@ -142,7 +143,7 @@ class AuthController {
         httpOnly: true,
         // secure: config.nodeEnv === 'production',
         secure: true, // для тестування на localhost, в продакшені має бути true
-        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: false, // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
       })
       res.json({ result: 'Logged out' })

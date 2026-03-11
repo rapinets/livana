@@ -26,6 +26,8 @@ export const signupSchema = z.object({
       'Password must contain at least one letter, one number, and one special character',
     ),
 
+  type: z.string(),
+
   // img: опціонально, додається у контролері якщо є файл
   img: z.string().optional()
 })
@@ -33,21 +35,32 @@ export const signupSchema = z.object({
 export const loginSchema = z.object({
   email: z.email({ message: 'Invalid email address' }),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  type: z.string().optional(),
 })
 
-export function validationUser(schema) {
+export function validationUser(schema, options = { addType: true }) {
   return async (req, res, next) => {
-    const type = await TypesDBService.getOne('user')
+    let safeBody = { ...req.body }
+    
+    if (options.addType) {
+      const type = await TypesDBService.getOne('user')
+      
+      if (!type || !type._id) {
+        return res.status(500).json({ error: 'Type "user" not found in database' })
+      }
 
-    const safeBody = {
-      ...req.body,
-      type: type._id,
+      safeBody = {
+        ...req.body,
+        type: type._id.toString(),
+      }
     }
+    
     const result = schema.safeParse(safeBody)
     if (!result.success) {
       const errors = result.error.issues.map((err) => err.message)
       return res.status(400).json({ errors })
     }
+    
     req.validated = result.data
     next()
   }
