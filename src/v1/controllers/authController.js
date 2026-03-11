@@ -32,8 +32,8 @@ class AuthController {
       // Відправляємо refreshToken у httpOnly cookie
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true, // cookie недоступна з JS
-        // secure: config.nodeEnv === 'production',
-        secure: true, // для тестування на localhost, в продакшені має бути true
+        secure: config.nodeEnv === 'production',
+        // secure: true, 
         sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
@@ -80,8 +80,8 @@ class AuthController {
       // Відправляємо refreshToken у httpOnly cookie
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        // secure: config.nodeEnv === 'production',
-        secure: true, // для тестування на localhost, в продакшені має бути true
+        secure: config.nodeEnv === 'production',
+        // secure: true, 
         sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
@@ -141,8 +141,8 @@ class AuthController {
     try {
       res.clearCookie('refreshToken', {
         httpOnly: true,
-        // secure: config.nodeEnv === 'production',
-        secure: true, // для тестування на localhost, в продакшені має бути true
+        secure: config.nodeEnv === 'production',
+        // secure: true, 
         sameSite: "none", // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
       })
