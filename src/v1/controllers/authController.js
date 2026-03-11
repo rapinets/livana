@@ -34,11 +34,11 @@ class AuthController {
         httpOnly: true, // cookie недоступна з JS
         // secure: config.nodeEnv === 'production',
         secure: true, // для тестування на localhost, в продакшені має бути true
-        sameSite: false, // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
       })
-      console.log('Refresh token set in cookie:', refreshToken)
+      
       // Відправляємо accessToken у відповіді
       res.status(201).json({
         result: 'Signed up successfully',
@@ -82,11 +82,11 @@ class AuthController {
         httpOnly: true,
         // secure: config.nodeEnv === 'production',
         secure: true, // для тестування на localhost, в продакшені має бути true
-        sameSite: false, // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
       })
-      console.log('Refresh token set in cookie:', refreshToken)
+      
       // Відправляємо accessToken у відповіді
       res.json({
         result: 'Authorized',
@@ -143,7 +143,7 @@ class AuthController {
         httpOnly: true,
         // secure: config.nodeEnv === 'production',
         secure: true, // для тестування на localhost, в продакшені має бути true
-        sameSite: false, // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: "none", // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
       })
       res.json({ result: 'Logged out' })
