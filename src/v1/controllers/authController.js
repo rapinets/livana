@@ -146,7 +146,7 @@ class AuthController {
         httpOnly: true,
         secure: isProd,
         // secure: true, 
-        sameSite: isProd ? "none" : "lax", // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: isProd ? 'none' : 'lax', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
       })
       res.json({ result: 'Logged out' })
