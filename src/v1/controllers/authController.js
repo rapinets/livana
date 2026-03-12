@@ -29,12 +29,13 @@ class AuthController {
         { id: savedUser._id, type: 'refresh' },
         req.headers,
       )
+      const isProd = config.nodeEnv === 'production'
       // Відправляємо refreshToken у httpOnly cookie
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true, // cookie недоступна з JS
-        secure: config.nodeEnv === 'production',
+        secure: isProd,
         // secure: true, 
-        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: isProd ? 'none' : 'lax', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
       })
@@ -77,12 +78,13 @@ class AuthController {
         req.headers,
       )
 
+      const isProd = config.nodeEnv === 'production'
       // Відправляємо refreshToken у httpOnly cookie
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        secure: config.nodeEnv === 'production',
+        secure: isProd,
         // secure: true, 
-        sameSite: 'none', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: isProd ? 'none' : 'lax', // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
         maxAge: config.refreshCookiesExpires,
       })
@@ -139,11 +141,12 @@ class AuthController {
   // Логаут користувача
   static async logout(req, res, next) {
     try {
+      const isProd = config.nodeEnv === 'production'
       res.clearCookie('refreshToken', {
         httpOnly: true,
-        secure: config.nodeEnv === 'production',
+        secure: isProd,
         // secure: true, 
-        sameSite: "none", // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
+        sameSite: isProd ? "none" : "lax", // дозволяємо відправляти cookie з інших доменів (для фронтенда на іншому домені)
         path: '/',
       })
       res.json({ result: 'Logged out' })
