@@ -5,7 +5,7 @@ class FiltersController {
     try {
       const result = await Product.aggregate([
         { $sort: { createdAt: 1 } },
-        { $first: "$$ROOT" }
+        { $limit: 1 }
       ])
       console.table(result)
       res.status(200).json(result[0])
