@@ -10,6 +10,7 @@ class ProductsController {
       // Санітизація і валідація фільтрів
       const filters = buildProductFilter(req.query)
       const productsList = await ProductsDBService.getList(filters)
+      
       res.status(200).json({
         products: productsList,
         user: req.user,
