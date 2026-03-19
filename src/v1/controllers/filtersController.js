@@ -7,8 +7,8 @@ class FiltersController {
         { $sort: { createdAt: 1 } },
         { $limit: 1 }
       ])
-      console.table(result)
-      res.status(200).json(result[0])
+      
+      res.status(200).json({product: result[0], user: req.user})
     } catch (error) {
       res.status(500).json({ error: 'Error fetching products' })
     }
