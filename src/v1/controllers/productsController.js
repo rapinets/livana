@@ -1,18 +1,14 @@
 import ProductsDBService from "../models/product/ProductsDBService.js"
 import {isValidObjectId} from '../validators/helpers.js'
 import {sanitizeProductInput} from '../validators/product/productSanitize.js'
-import {buildProductFilter} from '../validators/product/productFilter.js'
 
 class ProductsController {
   // Метод для отримання всіх товарів
   static async getAllProducts(req, res) {
     try {
-      // Санітизація і валідація фільтрів
-      const filters = buildProductFilter(req.query)
-      const productsList = await ProductsDBService.getList(filters)
-      
+      const productsData = await ProductsDBService.getList(req.query)
       res.status(200).json({
-        products: productsList,
+        data: productsData,
         user: req.user,
       })
     } catch (error) {
