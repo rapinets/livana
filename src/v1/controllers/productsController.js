@@ -1,5 +1,5 @@
 import ProductsDBService from "../models/product/ProductsDBService.js"
-import {isValidObjectId} from '../validators/helpers.js'
+
 import {sanitizeProductInput} from '../validators/product/productSanitize.js'
 
 class ProductsController {
@@ -21,9 +21,6 @@ class ProductsController {
       const id = req.params.id
       let product = null
       if (id) {
-        if (!isValidObjectId(id)) {
-          return res.status(400).json({ error: 'Invalid id' })
-        }
         product = await ProductsDBService.getById(id)
       }
 
