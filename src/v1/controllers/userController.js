@@ -1,17 +1,19 @@
 import UsersDBService from "../models/user/UsersDBService.js"
 // import TypesDBService from "../models/type/TypesDBService.js"
-import { buildUserFilter } from '../validators/user/userFilter.js'
 import { isValidObjectId } from "../validators/helpers.js"
 import { sanitizeUserInput } from '../validators/user/userSanitize.js'
 
 class UserController {
   static async usersList(req, res) {
-    try {
-      // Санітизація і валідація фільтрів
-      const filters = buildUserFilter(req.query)
+   try {
+      const filters = {}
+      for (const key in req.query) {
+        if (req.query[key]) filters[key] = req.query[key]
+      }
+
       const dataList = await UsersDBService.getList(filters)
       res.status(200).json({
-        users: dataList,
+        data: dataList,
         user: req.user,
       })
     } catch (err) {
