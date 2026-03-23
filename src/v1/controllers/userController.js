@@ -1,6 +1,5 @@
 import UsersDBService from "../models/user/UsersDBService.js"
 // import TypesDBService from "../models/type/TypesDBService.js"
-import { isValidObjectId } from "../validators/helpers.js"
 import { sanitizeUserInput } from '../validators/user/userSanitize.js'
 
 class UserController {
@@ -26,9 +25,6 @@ class UserController {
       const id = req.params.id
       let user = null
       if (id) {
-        if (!isValidObjectId(id)) {
-          return res.status(400).json({ error: 'Invalid id' })
-        }
         user = await UsersDBService.getById(id)
       }
       const emailQuery = req.query.email
