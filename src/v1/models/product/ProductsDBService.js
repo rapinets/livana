@@ -28,7 +28,8 @@ class ProductsDBService extends MongooseCRUDManager {
 
       return res
     } catch (error) {
-      return []
+      console.error("DB ERROR:", error)
+      throw error
     }
   }
 

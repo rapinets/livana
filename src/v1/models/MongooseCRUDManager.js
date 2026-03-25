@@ -50,7 +50,7 @@ class MongooseCRUDManager {
       )
 
       // Підрахунок кількості документів, що відповідають фільтрам
-      const count = await this.model.countDocuments(query)
+      const count = await this.model.countDocuments(query.getFilter())
 
       // Застосування додаткових дій до запиту з reqQuery та налаштувань полів за допомогою FiltersHelper
       query = FiltersHelper.applyActionsOptionsFromQuery(
@@ -73,22 +73,36 @@ class MongooseCRUDManager {
 
   //---- Додавання опцій populate для зв'язків
   addPopulationOptions(query, populateFields) {
-    populateFields.forEach((field) => {
-      if (typeof field === 'string') {
-        // Якщо поле передано як рядок
-        query = query.populate(field)
-      } else if (typeof field === 'object' && field.fieldForPopulation) {
-        // Якщо передано об'єкт з полем для заповнення та запитуваними полями
+    // populateFields.forEach((field) => {
+    //   if (typeof field === 'string') {
+    //     // Якщо поле передано як рядок
+    //     query = query.populate(field)
+    //   } else if (typeof field === 'object' && field.fieldForPopulation) {
+    //     // Якщо передано об'єкт з полем для заповнення та запитуваними полями
 
-        if (typeof field.fieldForPopulation === 'object')
-          query = query.populate(field.fieldForPopulation)
-        else
-          query = query.populate(
-            field.fieldForPopulation,
-            field.requiredFieldsFromTargetObject
-          )
+    //     if (typeof field.fieldForPopulation === 'object')
+    //       query = query.populate(field.fieldForPopulation)
+    //     else
+    //       query = query.populate(
+    //         field.fieldForPopulation,
+    //         field.requiredFieldsFromTargetObject
+    //       )
+    //   }
+    // })
+    populateFields.forEach((field) => {
+    if (typeof field === 'string') {
+      query.populate(field)
+    } else if (typeof field === 'object' && field.fieldForPopulation) {
+      if (typeof field.fieldForPopulation === 'object') {
+        query.populate(field.fieldForPopulation)
+      } else {
+        query.populate(
+          field.fieldForPopulation,
+          field.requiredFieldsFromTargetObject
+        )
       }
-    })
+    }
+  })
   }
   // Вибірка всього списку з бази з фільтрами, projection і populateFields
   async getList(filters = {}, projection = null, populateFields = []) {

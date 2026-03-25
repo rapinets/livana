@@ -9,7 +9,8 @@ class ProductsController {
     try {
       const productsData = await ProductsDBService.getList(req.query)
       res.status(200).json({
-        products: productsData,
+        products: productsData.documents,
+        total: productsData.count,
         user: req.user,
       })
     } catch (error) {
