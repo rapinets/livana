@@ -6,7 +6,7 @@ class ProductsController {
   // Метод для отримання всіх товарів
   static async getAllProducts(req, res) {
     try {
-      const productsData = await ProductsDBService.getList(req.query)
+      const productsData = await ProductsDBService.getList(filters = {}, projection = null, populateFields = [])
       res.status(200).json({
         data: productsData,
         user: req.user,
