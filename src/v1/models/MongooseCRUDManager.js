@@ -50,7 +50,7 @@ class MongooseCRUDManager {
       )
 
       // Підрахунок кількості документів, що відповідають фільтрам
-      const count = await this.model.countDocuments(query.getFilter())
+      const count = await this.model.countDocuments(query)
 
       // Застосування додаткових дій до запиту з reqQuery та налаштувань полів за допомогою FiltersHelper
       query = FiltersHelper.applyActionsOptionsFromQuery(
