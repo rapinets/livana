@@ -5,10 +5,11 @@ import {sanitizeProductInput} from '../validators/product/productSanitize.js'
 class ProductsController {
   // Метод для отримання всіх товарів
   static async getAllProducts(req, res) {
+    
     try {
-      const productsData = await ProductsDBService.getList(filters = {}, projection = null, populateFields = [])
+      const productsData = await ProductsDBService.getList(req.query)
       res.status(200).json({
-        data: productsData,
+        products: productsData,
         user: req.user,
       })
     } catch (error) {
