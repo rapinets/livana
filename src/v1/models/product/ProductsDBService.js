@@ -20,9 +20,7 @@ class ProductsDBService extends MongooseCRUDManager {
         ProductsDBService.fieldsConfigurations,
         null,
         [
-          {
-            fieldForPopulation: {},
-          },
+          
         ]
       )
 
