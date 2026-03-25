@@ -13,11 +13,18 @@ const middleware = (app, opts = {}) => {
   // Завантаження змінних середовища
   dotenv.config()
 
+  app.set("etag", false)
+
   // Middleware для парсингу cookies (move to top)
   app.use(cookieParser())
 
   // Підключення security middleware bundle (helmet, cors, rateLimit, body limits, requestId, env marker)
   applySecurity(app, opts.security)
+
+  app.use((req, res, next) => {
+    res.set("Cache-Control", "no-store")
+    next()
+  })
 
   // Middleware для логування запитів
   app.use(loggerConfig)
