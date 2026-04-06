@@ -67,6 +67,18 @@ class ProductsController {
       res.status(500).json({ error: err.message })
     }
   }
+
+  static async getProductsByCategory(req, res) {
+    try {
+      const data = await ProductsDBService.getProductsFromEachCategory(4)
+      res.status(200).json({
+        ...data,
+        user: req.user,
+      })
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching products by category' })
+    }
+  }
 }
 
 export default ProductsController

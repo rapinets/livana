@@ -33,6 +33,11 @@ const productSchema = new Schema({
   photo: {
     type: String,
     trim: true
+  },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+    required: [true, 'The category of the product must be filled in!']
   }
 }, { timestamps: true }
 )

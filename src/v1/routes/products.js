@@ -8,6 +8,7 @@ import { authenticate, requireRole } from '../../../middleware/auth.js'
 const router = Router()
 
 router.get('/', ProductsController.getAllProducts);
+router.get('/by-category', ProductsController.getProductsByCategory);
 router.get('/create', ProductsController.getForm)
 router.get('/update/:id', ProductsController.getForm)
 
