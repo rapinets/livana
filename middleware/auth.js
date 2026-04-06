@@ -5,6 +5,7 @@ const openPaths = [
   '/api/v1/auth/login',
   '/api/v1/auth/signup',
   '/api/v1/products',
+  '/api/v1/products/by-category',
   '/api/v1/auth/refresh',
   '/api/v1/auth/refresh-token',
   '/api/v1/auth/logout',
