@@ -12,8 +12,15 @@ class QueryParser {
   static range(fieldName, filterValue) {
     let minValue, maxValue
 
-    // Перевіряє, чи значення фільтра містить розділювач '-' (дефіс)
-    if (filterValue.includes('-')) {
+    // Handle object input like { '$gte': '1000', '$lte': '5000' }
+    if (typeof filterValue === 'object' && filterValue !== null && !Array.isArray(filterValue)) {
+      if (filterValue['$gte'] !== undefined) {
+        minValue = parseFloat(filterValue['$gte'])
+      }
+      if (filterValue['$lte'] !== undefined) {
+        maxValue = parseFloat(filterValue['$lte'])
+      }
+    } else if (typeof filterValue === 'string' && filterValue.includes('-')) {
       // Якщо так, розділяє значення фільтра на мінімальне та максимальне значення за допомогою методу split
       // та переводить їх у числа за допомогою parseFloat
       ;[minValue, maxValue] = filterValue.split('-').map(parseFloat)
@@ -27,11 +34,11 @@ class QueryParser {
       // Ітерація по кожному значенню в масиві filterValue
       filterValue.forEach((val) => {
         // Перевіряє, чи значення починається з 'gte:', що означає мінімальне значення (більше або дорівнює)
-        if (val.startsWith('gte:')) {
+        if (typeof val === 'string' && val.startsWith('gte:')) {
           minValue = parseFloat(val.slice(4))
         }
         // Перевіряє, чи значення починається з 'lte:', що означає максимальне значення (менше або дорівнює)
-        if (val.startsWith('lte:')) {
+        if (typeof val === 'string' && val.startsWith('lte:')) {
           maxValue = parseFloat(val.slice(4))
         }
       })
