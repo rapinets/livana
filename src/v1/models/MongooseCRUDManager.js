@@ -18,7 +18,8 @@ class MongooseCRUDManager {
       // Застосування фільтрів пошуку з reqQuery за допомогою FiltersHelper
       query = FiltersHelper.applyFindOptionsFromQuery(
         reqQuery,
-        fieldsConfiguration
+        fieldsConfiguration,
+        query
       )
 
       // Додавання опцій populate для зв'язків

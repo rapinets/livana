@@ -23,7 +23,12 @@ class QueryParser {
     } else if (typeof filterValue === 'string' && filterValue.includes('-')) {
       // Якщо так, розділяє значення фільтра на мінімальне та максимальне значення за допомогою методу split
       // та переводить їх у числа за допомогою parseFloat
-      ;[minValue, maxValue] = filterValue.split('-').map(parseFloat)
+      const [min, max] = filterValue
+        .split('-')
+        .map((value) => parseFloat(value.trim()))
+
+      if (!Number.isNaN(min)) minValue = min
+      if (!Number.isNaN(max)) maxValue = max
     } else {
       // Якщо немає дефіса, перевіряє, чи значення фільтра є масивом
       if (!Array.isArray(filterValue)) {
@@ -59,7 +64,6 @@ class QueryParser {
     if (!isNaN(maxValue)) {
       filtersContent.push({
         fieldName,
-        filterType: 'maxValue',
         filterType: 'maxValue',
         filterContent: maxValue,
       })
