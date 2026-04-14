@@ -49,27 +49,27 @@ class QueryParser {
       })
     }
 
-    const filtersContent = []
-
-    // Якщо мінімальне значення не NaN (число), додає його до масиву фільтрів
+    // Build a single range filter object with both operators
+    const filterContent = {}
     if (!isNaN(minValue)) {
-      filtersContent.push({
-        fieldName,
-        filterType: 'minValue',
-        filterContent: minValue,
-      })
+      filterContent['$gte'] = minValue
     }
-
-    // Якщо максимальне значення не NaN (число), додає його до масиву фільтрів
     if (!isNaN(maxValue)) {
-      filtersContent.push({
-        fieldName,
-        filterType: 'maxValue',
-        filterContent: maxValue,
-      })
+      filterContent['$lte'] = maxValue
     }
 
-    return filtersContent
+    // Return single filter object if there are any valid values
+    if (Object.keys(filterContent).length > 0) {
+      return [
+        {
+          fieldName,
+          filterType: 'range',
+          filterContent,
+        }
+      ]
+    }
+
+    return []
   }
 
   //Парсить фільтр списку значень (розділених комою).

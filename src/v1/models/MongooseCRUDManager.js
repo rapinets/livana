@@ -1,4 +1,5 @@
 import FiltersHelper from '../../../utils/searchHelpers/FiltersHelper.js'
+import QueryParser from '../../../utils/searchHelpers/QueryParser.js'
 
 class MongooseCRUDManager {
   constructor(model) {
@@ -40,33 +41,52 @@ class MongooseCRUDManager {
     populateFields = [] // Поля для заповнення
   ) {
     try {
-      // Створення базового запиту для пошуку багатьох документів
-      let query = this.model.find({}, projection)
-
-      // Застосування фільтрів пошуку з reqQuery та налаштувань полів за допомогою FiltersHelper
-      query = FiltersHelper.applyFiltersOptionsFromQuery(
-        reqQuery,
-        fieldsConfiguration,
-        query
-      )
-
-      // Підрахунок кількості документів, що відповідають фільтрам
-      const count = await this.model.countDocuments(query.getFilter())
-
-      // Застосування додаткових дій до запиту з reqQuery та налаштувань полів за допомогою FiltersHelper
-      query = FiltersHelper.applyActionsOptionsFromQuery(
-        reqQuery,
-        fieldsConfiguration,
-        query
-      )
-
-      // Додавання опцій populate для зв'язків
-      this.addPopulationOptions(query, populateFields)
-
-      // Виконання запиту та повернення знайдених документів разом з їхньою кількістю
-      const documents = await query.exec()
-
-      return { documents, count }
+      // Спочатку будуємо MongoDB фільтер
+      const { filters, actions } = QueryParser.parseQuery(reqQuery, fieldsConfiguration)
+      const mongoFilter = FiltersHelper.buildMongoFilter(filters)
+      
+      // Використовуємо baixо-рівневий MongoDB driver для уникнення Mongoose schema validation
+      // Це необхідно тому що Mongoose 9 намагається кастувати query operators як значення документу
+      const collection = this.model.collection
+      
+      // Отримуємо документи
+      let cursor = collection.find(mongoFilter)
+      
+      // Застосовуємо дії (сортування, пагінація)
+      if (actions.length) {
+        actions.forEach(action => {
+          switch (action.type) {
+            case 'sort':
+              cursor = cursor.sort({ [action.field]: action.order })
+              break
+            case 'skip':
+              cursor = cursor.skip(action.value)
+              break
+            case 'limit':
+              cursor = cursor.limit(action.value)
+              break
+          }
+        })
+      }
+      
+      // Отримуємо документи як plain objects
+      const documents = await cursor.toArray()
+      
+      // Для кожного документу створюємо Mongoose документ якщо потрібно populate
+      let finalDocuments = documents
+      if (populateFields && populateFields.length > 0) {
+        // Якщо потрібен populate, конвертуємо в Mongoose документи
+        finalDocuments = await Promise.all(
+          documents.map(doc => 
+            this.model.findById(doc._id).populate(populateFields)
+          )
+        )
+      }
+      
+      // Отримуємо загальну кількість
+      const count = await collection.countDocuments(mongoFilter)
+      
+      return { documents: finalDocuments, count }
     } catch (error) {
       throw new Error('Error retrieving data: ' + error.message)
     }

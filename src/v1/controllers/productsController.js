@@ -7,6 +7,7 @@ class ProductsController {
   static async getAllProducts(req, res) {
     
     try {
+      
       const productsData = await ProductsDBService.getList(req.query)
       res.status(200).json({
         products: productsData.documents,
