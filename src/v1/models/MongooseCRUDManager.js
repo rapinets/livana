@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import FiltersHelper from '../../../utils/searchHelpers/FiltersHelper.js'
 import QueryParser from '../../../utils/searchHelpers/QueryParser.js'
 
@@ -49,6 +50,9 @@ class MongooseCRUDManager {
       // Це необхідно тому що Mongoose 9 намагається кастувати query operators як значення документу
       const collection = this.model.collection
       
+      // Кастимо ObjectId-значення для raw driver запиту
+      this.castObjectIdFilters(mongoFilter)
+
       // Отримуємо документи
       let cursor = collection.find(mongoFilter)
       
@@ -89,6 +93,26 @@ class MongooseCRUDManager {
       return { documents: finalDocuments, count }
     } catch (error) {
       throw new Error('Error retrieving data: ' + error.message)
+    }
+  }
+
+  castObjectIdFilters(mongoFilter) {
+    if (!mongoFilter || typeof mongoFilter !== 'object') return
+
+    const castValue = (value) => {
+      if (typeof value === 'string' && mongoose.isValidObjectId(value)) {
+        return new mongoose.Types.ObjectId(value)
+      }
+      return value
+    }
+
+    if (mongoFilter.category && typeof mongoFilter.category === 'object') {
+      if (Array.isArray(mongoFilter.category.$in)) {
+        mongoFilter.category.$in = mongoFilter.category.$in.map(castValue)
+      }
+      if (Array.isArray(mongoFilter.category.$nin)) {
+        mongoFilter.category.$nin = mongoFilter.category.$nin.map(castValue)
+      }
     }
   }
 

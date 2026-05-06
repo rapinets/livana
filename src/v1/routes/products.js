@@ -9,8 +9,10 @@ const router = Router()
 
 router.get('/', ProductsController.getAllProducts);
 router.get('/by-category', ProductsController.getProductsByCategory);
+router.get('/by-category-id', ProductsController.getProductsByCategoryId);
 router.get('/create', ProductsController.getForm)
 router.get('/update/:id', ProductsController.getForm)
+router.get('/:id', ProductsController.getById)
 
 router.post('/create', authenticate, requireRole('admin'), UploadManager.single('photo'), validateProduct(productSchema), ProductsController.create)
 

@@ -12,6 +12,10 @@ class ProductsDBService extends MongooseCRUDManager {
       fieldName: 'price',
       filterCategory: 'range',
     },
+    {
+      fieldName: 'category',
+      filterCategory: 'list',
+    },
   ]
 
  async getList(reqQuery) {
@@ -47,8 +51,8 @@ class ProductsDBService extends MongooseCRUDManager {
             .lean();
 
           return {
-            categoryId: category._id,
-            categoryName: category.name,
+            id: category._id,
+            name: category.name,
             products,
             count: products.length
           };
@@ -61,6 +65,36 @@ class ProductsDBService extends MongooseCRUDManager {
       throw error
     }
   }
+
+  async getProductsByCategory() {
+    try {
+       // Запитуємо всі категорії
+      const categories = await Category.find({});
+
+      // Для кожної категорії отримуємо товари, сортовані за датою (новіші спочатку)
+      const result = await Promise.all(
+        categories.map(async (category) => {
+          const products = await this.model
+            .find({ category: category._id })
+            .sort({ createdAt: -1 })
+            .lean();
+
+          return {
+            id: category._id,
+            name: category.name,
+            products,
+            count: products.length
+          };
+        })
+      );
+
+      return { categories: result };
+    } catch (error) {
+      console.error("DB ERROR:", error)
+      throw error
+    }
+  }
+
 }
 
 export default new ProductsDBService(Product)

@@ -80,6 +80,32 @@ class ProductsController {
       res.status(500).json({ error: 'Error fetching products by category' })
     }
   }
+
+  static async getProductsByCategoryId(req, res) {
+    try {
+      const data = await ProductsDBService.getProductsByCategory()
+      res.status(200).json({
+        ...data,
+        user: req.user,
+      })
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching products by category ID' })
+    }
+  }
+
+  static async getById(req, res) {
+    try {
+      const id = req.params.id
+      const product = await ProductsDBService.getById(id, ['category'])
+      res.status(200).json({
+        product,
+        user: req.user,
+      })
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching product by ID' })
+    }
+  }
+
 }
 
 export default ProductsController
