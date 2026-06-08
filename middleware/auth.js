@@ -13,6 +13,16 @@ const openPaths = [
   '/api/v1/auth/logout',
 ];
 
+function matchesOpenPath(path) {
+  return openPaths.some((pattern) => {
+    if (pattern.includes('/:')) {
+      const regex = new RegExp('^' + pattern.replace(/:[^/]+/g, '[^/]+') + '$')
+      return regex.test(path)
+    }
+    return path === pattern
+  })
+}
+
 // Middleware для перевірки ролей (приклад: тільки admin)
 // Middleware для перевірки ролей (можна передати одну або декілька ролей)
 export function requireRole(roles) {
@@ -28,7 +38,7 @@ export function requireRole(roles) {
 
 // Middleware для аутентифікації
 export function authenticate(req, res, next) {
-  if (openPaths.includes(req.path)) {
+  if (matchesOpenPath(req.path)) {
     return next()
   }
   
