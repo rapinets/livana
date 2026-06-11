@@ -1,12 +1,8 @@
 import jwt from 'jsonwebtoken'
 import config from '../config/default.js'
 
-function prepareSecret(headers, type) {
-  const secret =
-    type === 'access' ? config.jwtAccessSecret : config.jwtRefreshSecret
-  return (
-    secret + (headers['user-agent'] || '') + (headers['accept-language'] || '')
-  )
+function prepareSecret(type) {
+  return type === 'access' ? config.jwtAccessSecret : config.jwtRefreshSecret
 }
 
 function parseBearer(bearer, headers, type = 'access') {
@@ -17,7 +13,7 @@ function parseBearer(bearer, headers, type = 'access') {
     throw new Error('No Bearer token')
   }
   try {
-    const decoded = jwt.verify(token, prepareSecret(headers, type))
+    const decoded = jwt.verify(token, prepareSecret(type))
     return decoded
   } catch (err) {
     throw new Error('Invalid token')
