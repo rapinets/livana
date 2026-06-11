@@ -118,17 +118,8 @@ class CartDBService extends MongooseCRUDManager {
         })
         .populate({
           path: 'productsList.product',
-          // populate: {
-          //   path: 'seller',
-          //   populate: {
-          //     path: 'type', // Заповнюємо тип продавця
-          //   },
-          // },
           populate: {
             path: 'category', // Заповнюємо категорію продукту
-            populate: {
-              path: 'type', // Заповнюємо тип категорії
-            },
           },
         })
 
