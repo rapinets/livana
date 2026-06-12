@@ -2,11 +2,12 @@ import jwt from 'jsonwebtoken'
 import config from '../config/default.js'
 
 function prepareSecret(headers, type) {
-  const secret =
-    type === 'access' ? config.jwtAccessSecret : config.jwtRefreshSecret
-  return (
-    secret + (headers['user-agent'] || '') + (headers['accept-language'] || '')
-  )
+  // const secret =
+  //   type === 'access' ? config.jwtAccessSecret : config.jwtRefreshSecret
+  // return (
+  //   secret + (headers['user-agent'] || '') + (headers['accept-language'] || '')
+  // )
+  return type === 'access' ? config.jwtAccessSecret : config.jwtRefreshSecret
 }
 
 function parseBearer(bearer, headers, type = 'access') {
