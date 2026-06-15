@@ -1,5 +1,5 @@
 import FavoriteDbService from "../models/favorite/FavoriteDBService.js";
-import ProductDbService from "../models/product/ProductDbService.js";
+import ProductsDbService from "../models/product/ProductsDbService.js";
 
 class FavoriteController {
   static async getFavoriteDetails(req, res) {
@@ -22,7 +22,7 @@ class FavoriteController {
       }
       const userId = req.user.id; // Отримання id користувача
       const { productId } = req.body; // Отримання id продукту
-      const product = await ProductDbService.getById(productId);
+      const product = await ProductsDbService.getById(productId);
       if (!product) {
         return res.status(404).json({ error: "Product not found" });
       }
