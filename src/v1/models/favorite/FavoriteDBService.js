@@ -1,6 +1,6 @@
-import Favorite from "./Favorite";
-import ProductDbService from "../product/ProductDbService";
-import MongooseCRUDManager from "../MongooseCRUDManager";
+import Favorite from "./Favorite.js";
+import ProductDbService from "../product/ProductDbService.js";
+import MongooseCRUDManager from "../MongooseCRUDManager.js";
 import mongoose from "mongoose";
 import {populate} from "dotenv";
 
