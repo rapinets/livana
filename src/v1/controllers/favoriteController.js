@@ -47,3 +47,5 @@ class FavoriteController {
     }
   }
 }
+
+export default FavoriteController;
