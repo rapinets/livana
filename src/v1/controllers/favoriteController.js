@@ -1,5 +1,5 @@
-import FavoriteDbService from "@/v1/models/favorite/FavoriteDBService.js";
-import ProductsDbService from "@/v1/models/product/ProductDbService.js";
+import FavoriteDbService from "../models/favorite/FavoriteDbService.js";
+import ProductsDbService from "../models/product/ProductDbService.js";
 
 class FavoriteController {
   static async getFavoriteDetails(req, res) {
