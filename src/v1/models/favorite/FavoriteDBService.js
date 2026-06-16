@@ -1,7 +1,6 @@
 import Favorite from "./Favorite.js";
 import MongooseCRUDManager from "../MongooseCRUDManager.js";
 import mongoose from "mongoose";
-import {populate} from "dotenv";
 
 class FavoriteDBService extends MongooseCRUDManager {
   async getFavoriteDetails(userId) {
@@ -12,7 +11,7 @@ class FavoriteDBService extends MongooseCRUDManager {
           populate: { path: 'type'}
         })
         .populate({ 
-          path: 'productsList.product',
+          path: 'products.product',
           populate: {
             path: 'category'
           }
@@ -20,7 +19,7 @@ class FavoriteDBService extends MongooseCRUDManager {
 
       return favoriteDetails
     } catch (err) {
-      throw new Error("Error fetching favorite details");
+      throw new Error("Error fetching favorite details: " + err.message);
     }
   }
 
