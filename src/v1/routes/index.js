@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.use('/auth', auth)
 router.use('/users', users)
-router.use('/favorite', favorite)
+router.use('/favorites', favorite)
 router.use('/products', products)
 router.use('/cart', cart)
 
