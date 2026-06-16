@@ -25,16 +25,13 @@ class FavoriteDBService extends MongooseCRUDManager {
 
   async addProduct({ userId, productId }) {
     try {
-      const favorite = await Favorite.findOne({ customer: userId })
-      if (!favorite) {
-        throw new Error("Favorite not found");
-      }
-      // Add product to favorite
-      favorite.products.push({ product: productId });
-      await favorite.save();
-      return favorite;
+      return await Favorite.findOneAndUpdate(
+        { customer: userId },
+        { $addToSet: { products: [{ product: productId }] } },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
     } catch (err) {
-      throw new Error("Error adding product to favorites");
+      throw new Error("Error adding product to favorites: " + err.message);
     }
   }
 
