@@ -176,7 +176,7 @@ class CartDBService extends MongooseCRUDManager {
           $set: { 'productsList.$.amount': amount }, //Символ $ є оператором, який вказує на відповідний
           //елемент у масиві, що відповідає умові запиту.
         },
-        { new: true }
+        { returnDocument: 'after' }
       )
       return cart
     } catch (error) {
@@ -228,7 +228,7 @@ class CartDBService extends MongooseCRUDManager {
           // для видалення елементів з масиву, які відповідають певній умові
         },
         {
-          new: true, // Повернення оновленого документу
+          returnDocument: 'after', // Повернення оновленого документу
         }
       )
     } catch (error) {

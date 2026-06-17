@@ -28,7 +28,7 @@ class FavoriteDBService extends MongooseCRUDManager {
       return await Favorite.findOneAndUpdate(
         { customer: userId },
         { $addToSet: { products: [{ product: productId }] } },
-        { new: true, upsert: true, setDefaultsOnInsert: true }
+        { returnDocument: 'after', upsert: true, setDefaultsOnInsert: true }
       );
     } catch (err) {
       throw new Error("Error adding product to favorites: " + err.message);
@@ -40,7 +40,7 @@ class FavoriteDBService extends MongooseCRUDManager {
       return await Favorite.findOneAndUpdate(
         { customer: userId },
         { $pull: { products: { product: productId } } },
-        { new: true }
+        { returnDocument: 'after' }
       );
     } catch (err) {
       throw new Error("Error removing product from favorites");

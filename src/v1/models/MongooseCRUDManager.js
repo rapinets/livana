@@ -200,7 +200,7 @@ class MongooseCRUDManager {
   async update(id, data) {
     try {
       return await this.model
-        .findByIdAndUpdate(id, data, { new: true, runValidators: true })
+        .findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true })
         .exec()
     } catch (error) {
       throw new Error('Error updating data: ' + error.message)
