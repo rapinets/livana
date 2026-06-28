@@ -19,23 +19,6 @@ class ProductsController {
     }
   }
 
-  static async getForm(req, res) {
-     try {
-      const id = req.params.id
-      let product = null
-      if (id) {
-        product = await ProductsDBService.getById(id)
-      }
-
-      res.status(200).json({
-        product,
-        user: req.user,
-      })
-    } catch (err) {
-      res.status(500).json({ error: err.message })
-    }
-  }
-
   static async create(req, res) {
     const data = req.validated
     try {

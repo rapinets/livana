@@ -39,8 +39,12 @@ class FavoriteController {
         return res.status(403).json({ error: "Access denied" });
       }
       const userId = req.user.id; // Отримання id користувача
-      const { id } = req.body; // Отримання id продукту
-      const favorite = await FavoriteDBService.removeProduct({ userId, productId: id });
+      
+      const productId = req.body.id || req.body.productId;
+      if (!productId) {
+        return res.status(400).json({ error: "Product id is required" });
+      }
+      await FavoriteDBService.removeProduct({ userId, productId });
       return res.status(200).json({ message: 'Product removed successfully' });
     } catch (err) {
       return res.status(500).json({ error: err.message });
